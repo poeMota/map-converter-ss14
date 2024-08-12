@@ -7,11 +7,11 @@ import os
 
 if __name__ == '__main__':
     _entityMan = EntitySystem()
-    _map = Map({"Space": 0, "Test": 101})
+    _map = Map()
 
     chunk1 = Chunk([0, 0])
     chunk2 = Chunk([0, 1])
-    grid = Grid(_map, [chunk1, chunk2], "grid", 10, 1.3242)
+    grid = Grid(_map, [chunk1, chunk2], "grid", 0, 0)
     tile = Tile(10, 10, "Test")
     tile2 = Tile(5, 22, "Test")
     grid.SetTile(tile)

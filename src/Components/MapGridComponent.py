@@ -14,6 +14,7 @@ class MapGridComponent(Component):
             "type": type(self).__name__.replace("Component", ""),
             "chunks": {
                 ind: self.chunks[ind]._serialize(self.tilemap)
-            for ind in self.chunks}
+                for ind in self.chunks if self.chunks[ind]._filled_tiles > 0
+            }
         }
 

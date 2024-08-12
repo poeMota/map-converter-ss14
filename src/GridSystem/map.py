@@ -3,12 +3,12 @@ from src.EntitySystem import EntitySystem
 
 
 class Map:
-    def __init__(self, tilemap, formatId: int = 6, postmapinit: bool = False):
+    def __init__(self, formatId: int = 6, postmapinit: bool = False):
         self.grids = {} # uid: grid
         self.format = formatId
         self.postmapinit = postmapinit
 
-        self.tilemap = tilemap # tileName: id
+        self.tilemap = {"Space": 0} # tileName: id
 
 
     def addGrid(self, grid: Grid) -> bool:

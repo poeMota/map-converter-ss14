@@ -32,6 +32,12 @@ class Grid(Entity):
 
 
     def SetTile(self, tile: Tile):
+        if tile.name not in self.map.tilemap:
+            tile.id = len(self.map.tilemap.values())
+            self.map.tilemap[tile.name] = len(self.map.tilemap.values())
+        else:
+            tile.id = self.map.tilemap[tile.name]
+
         ind = [int(tile.x / 16), int(tile.y / 16)]
         ind_str = f"{ind[0]},{ind[1]}"
         if ind_str in self.chunks:

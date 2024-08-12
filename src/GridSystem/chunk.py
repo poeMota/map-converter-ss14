@@ -9,6 +9,7 @@ class Chunk:
         self.ind = ind # [x, y]
         self.tiles = [[None] * self.chunksize] * self.chunksize
         self.version = version
+        self._filled_tiles = 0
 
         for y in range(self.chunksize):
             for x in range(self.chunksize):
@@ -34,5 +35,11 @@ class Chunk:
 
 
     def setTile(self, tile: Tile):
-        self.tiles[tile.y % self.chunksize][tile.x % self.chunksize] = tile
+        y, x = tile.y % self.chunksize, tile.x % self.chunksize
+        if tile.id != 0 and self.tiles[y][x].id == 0:
+            self._filled_tiles += 1
+        elif tile.id == 0 and self.tiles[y][x].id != 0:
+            self._filled_tiles -= 1
+
+        self.tiles[y][x] = tile
 
