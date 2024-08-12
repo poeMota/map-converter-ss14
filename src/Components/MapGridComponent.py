@@ -3,17 +3,17 @@ from .base import Component
 
 
 class MapGridComponent(Component):
-    def __init__(self, grid):
+    def __init__(self, chunks, tilemap):
         Component.__init__(self)
-        self.grid = grid
-        self.chunks: list[Chunk] = grid.chunks
+        self.chunks: dict[Chunk] = chunks
+        self.tilemap = tilemap
 
 
     def _serialize(self) -> dict:
         return {
-            "type": type(self).__name__,
+            "type": type(self).__name__.replace("Component", ""),
             "chunks": {
-                ",".join([str(i) for i in chunk.ind]): chunk._serialize(self.grid.tilemap)
-            for chunk in self.chunks}
+                ind: self.chunks[ind]._serialize(self.tilemap)
+            for ind in self.chunks}
         }
 

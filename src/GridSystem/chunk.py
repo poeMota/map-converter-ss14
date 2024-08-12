@@ -33,6 +33,6 @@ class Chunk:
                 }
 
 
-    def setTile(tile: Tile):
+    def setTile(self, tile: Tile):
         self.tiles[tile.y % self.chunksize][tile.x % self.chunksize] = tile
 
