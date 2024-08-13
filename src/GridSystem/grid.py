@@ -36,12 +36,8 @@ class Grid(Entity):
         self.chunks[chunk.strInd()] = chunk
 
 
-    def SetTile(self, tile: Tile):
-        if tile.name not in self.map.tilemap:
-            tile.id = len(self.map.tilemap.values())
-            self.map.tilemap[tile.name] = len(self.map.tilemap.values())
-        else:
-            tile.id = self.map.tilemap[tile.name]
+    def SetTile(self, tile: Tile, _tilesRefsMan):
+        tile.id = _tilesRefsMan.tileRefs[tile.name]
 
         ind = [floor(tile.x / 16), floor(tile.y / 16)]
         ind_str = f"{ind[0]},{ind[1]}"
@@ -50,4 +46,7 @@ class Grid(Entity):
         else:
             self.AddChunk(Chunk(ind))
             self.chunks[ind_str].setTile(tile)
+
+        if tile.name not in self.map.usedTiles:
+            self.map.usedTiles.append(tile.name)
 

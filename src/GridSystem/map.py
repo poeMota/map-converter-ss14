@@ -1,5 +1,6 @@
 from .grid import Grid
 from src.EntitySystem import EntitySystem
+from src.Tiles import TilesRefsManager
 
 
 class Map:
@@ -8,7 +9,7 @@ class Map:
         self.format = formatId
         self.postmapinit = postmapinit
 
-        self.tilemap = {"Space": 0} # tileName: id
+        self.usedTiles = []
 
 
     def addGrid(self, grid: Grid) -> bool:
@@ -20,12 +21,15 @@ class Map:
 
     def _serialize(self):
         _entityMan = EntitySystem()
+        _tilesRefsManager = TilesRefsManager()
         return {
             "meta": {
                 "format": self.format,
                 "postmapinit": self.postmapinit
             },
-            "tilemap": {self.tilemap[tile]: tile for tile in self.tilemap}, # id: tileName
+            "tilemap": { # id: tileName
+                _tilesRefsManager.tileRefs[tile]: tile for tile in self.usedTiles
+            },
             "entities": _entityMan._serialize()
         }
 

@@ -3,11 +3,12 @@ from src import yaml
 from pprint import pprint
 from src.EntitySystem import EntitySystem
 from src.ImageReader import *
+from src.Tiles import TilesRefsManager
 import os
 
 
 if __name__ == '__main__':
-    print(GetImageColormap(os.getcwd() + "/.debug/test.png"))
+    _tilesRefsManager = TilesRefsManager()
     _map = ConvertImageToMap(
             path=os.getcwd() + "/.debug/test.png",
             colormap={
@@ -25,6 +26,5 @@ if __name__ == '__main__':
                       '#93774bfe01': "Plating"
                     }
         )
-    print(_map.tilemap)
     yaml.write(os.getcwd() + "/.debug/test.yml", _map._serialize())
 

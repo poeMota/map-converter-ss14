@@ -1,5 +1,6 @@
 from PIL import Image
 from src.GridSystem import Map, Grid, Chunk, Tile
+from src.Tiles import TilesRefsManager
 from math import floor
 
 
@@ -28,6 +29,8 @@ def rgbaToHex(rgba):
 
 
 def ConvertImageToMap(path: str, colormap: dict):
+    _tilesRefsMan = TilesRefsManager()
+
     img = Image.open(path).convert('RGBA')
     pixels = img.load()
     width, height = img.size
@@ -37,9 +40,6 @@ def ConvertImageToMap(path: str, colormap: dict):
     chunksX = floor(width / chunkSize)
 
     _map = Map()
-    _map.tilemap = {
-            "Space": 0,
-        }
     grid = Grid(_map, [], "grid", 0, 0)
 
     for x in range(width):
@@ -52,7 +52,7 @@ def ConvertImageToMap(path: str, colormap: dict):
                 grid.AddChunk(Chunk(ind))
             color = rgbaToHex(pixels[x, y])
             tile = Tile(x, inv_y, colormap[color])
-            grid.SetTile(tile)
+            grid.SetTile(tile, _tilesRefsMan)
 
     _map.addGrid(grid)
     return _map
