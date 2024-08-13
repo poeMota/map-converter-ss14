@@ -3,14 +3,14 @@ from .tile import Tile
 
 from src.Components import *
 from src.EntitySystem import Entity
+from math import floor
 
 
 class Grid(Entity):
-    def __init__(self, Map, chunks: list[Chunk], center: list, name: str, x: float, y: float):
+    def __init__(self, Map, chunks: list[Chunk], name: str, x: float, y: float):
         Entity.__init__(self)
         self.chunks = {chunk.strInd(): chunk for chunk in chunks}
         self.map = Map
-        self.center = center
 
         self.components: list[Component] = [
             MetaDataComponent(name),
@@ -43,7 +43,7 @@ class Grid(Entity):
         else:
             tile.id = self.map.tilemap[tile.name]
 
-        ind = [int((tile.x - self.center[0]) / 16), int((tile.y - self.center[1]) / 16)]
+        ind = [floor(tile.x / 16), floor(tile.y / 16)]
         ind_str = f"{ind[0]},{ind[1]}"
         if ind_str in self.chunks:
             self.chunks[ind_str].setTile(tile)

@@ -7,38 +7,24 @@ import os
 
 
 if __name__ == '__main__':
-    '''
-    _entityMan = EntitySystem()
-    _map = Map()
-
-    chunk1 = Chunk([0, 0])
-    chunk2 = Chunk([0, 1])
-    grid = Grid(_map, [chunk1, chunk2], "grid", 0, 0)
-    tile = Tile(10, 10, "Test")
-    tile2 = Tile(5, 22, "Test")
-    grid.SetTile(tile)
-    grid.SetTile(tile2)
-    _map.addGrid(grid)
-    '''
+    print(GetImageColormap(os.getcwd() + "/.debug/test.png"))
     _map = ConvertImageToMap(
-            path=os.getcwd() + "/test.png",
+            path=os.getcwd() + "/.debug/test.png",
             colormap={
-                      '#000000': "Space",
-                      '#007f7f': "Plating",
-                      '#c6c6c6': "Plating",
-                      '#7f6a00': "Plating",
-                      '#404040': "Plating",
-                      '#808080': "Plating",
-                      '#7f6e6b': "Plating",
-                      '#5c9035': "Plating",
-                      '#ffdc6b': "Plating",
-                      '#2f7b8b': "Plating",
-                      '#93774b': "Plating"
+                      '#00000000': "Space",
+                      '#000000fe01': "Plating",
+                      '#007f7ffe01': "Plating",
+                      '#c6c6c6fe01': "Plating",
+                      '#7f6a00fe01': "Plating",
+                      '#404040fe01': "Plating",
+                      '#808080fe01': "Plating",
+                      '#7f6e6bfe01': "Plating",
+                      '#5c9035fe01': "Plating",
+                      '#ffdc6bfe01': "Plating",
+                      '#2f7b8bfe01': "Plating",
+                      '#93774bfe01': "Plating"
                     }
         )
     print(_map.tilemap)
-    yaml.write(os.getcwd() + "/test.yml", _map._serialize())
-
-
-    print(GetImageColormap(os.getcwd() + "/test.png"))
+    yaml.write(os.getcwd() + "/.debug/test.yml", _map._serialize())
 

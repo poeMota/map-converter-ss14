@@ -7,7 +7,7 @@ class Chunk:
         self.chunksize: int = 16
 
         self.ind = ind # [x, y]
-        self.tiles = [[None] * self.chunksize] * self.chunksize
+        self.tiles = [[None for _ in range(self.chunksize)] for _ in range(self.chunksize)]
         self.version = version
         self._filled_tiles = 0
 

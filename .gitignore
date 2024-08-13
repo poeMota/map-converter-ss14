@@ -166,5 +166,5 @@ cython_debug/
 *.swo
 
 # test
-test.*
+.debug/
 
