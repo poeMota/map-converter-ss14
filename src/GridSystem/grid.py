@@ -8,7 +8,7 @@ from src.EntitySystem import Entity
 class Grid(Entity):
     def __init__(self, Map, chunks: list[Chunk], name: str, x: float, y: float):
         Entity.__init__(self)
-        self.chunks = {f"{chunk.ind[0]},{chunk.ind[1]}": chunk for chunk in chunks}
+        self.chunks = {chunk.strInd(): chunk for chunk in chunks}
         self.map = Map
 
         self.components: list[Component] = [
@@ -31,6 +31,10 @@ class Grid(Entity):
         self.map.addGrid(self)
 
 
+    def AddChunk(self, chunk: Chunk):
+        self.chunks[chunk.strInd()] = chunk
+
+
     def SetTile(self, tile: Tile):
         if tile.name not in self.map.tilemap:
             tile.id = len(self.map.tilemap.values())
@@ -43,6 +47,6 @@ class Grid(Entity):
         if ind_str in self.chunks:
             self.chunks[ind_str].setTile(tile)
         else:
-            self.chunks[ind_str] = Chunk(ind)
+            self.AddChunk(Chunk(ind))
             self.chunks[ind_str].setTile(tile)
 

@@ -43,3 +43,7 @@ class Chunk:
 
         self.tiles[y][x] = tile
 
+
+    def strInd(self):
+        return f"{self.ind[0]},{self.ind[1]}"
+

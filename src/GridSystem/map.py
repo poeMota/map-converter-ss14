@@ -22,10 +22,10 @@ class Map:
         _entityMan = EntitySystem()
         return {
             "meta": {
-                "formap": self.format,
+                "format": self.format,
                 "postmapinit": self.postmapinit
             },
             "tilemap": {self.tilemap[tile]: tile for tile in self.tilemap}, # id: tileName
-            "enities": _entityMan._serialize()
+            "entities": _entityMan._serialize()
         }
 
