@@ -16,22 +16,28 @@ class Chunk:
                 self.tiles[y][x] = Tile(
                         x= self.ind[0] * self.chunksize + x,
                         y= self.ind[1] * self.chunksize + y,
-                        tile= "Space"
+                        tile= "Space",
+                        tileId= 0
                     )
 
 
-    def _serialize(self, tilemap: dict) -> dict:
+    def _serialize(self) -> dict:
         return {
                 "ind": ",".join([str(i) for i in self.ind]),
-                "tiles": "".join([
-                    "".join([base64.b64encode(
-                        tilemap[tile.name].to_bytes(2, 'big') +
-                        tile.metadata.to_bytes(2, 'big') +
-                        tile.variation.to_bytes(2, 'big')
-                    ).decode('utf-8') for tile in row])
-                for row in self.tiles]),
+                "tiles": self._serialize_tiles(),
                 "version": self.version
                 }
+
+
+    def _serialize_tiles(self):
+        barr = bytes()
+        for y in range(self.chunksize):
+            for x in range(self.chunksize):
+                tile = self.tiles[y][x]
+                barr += tile.id.to_bytes(2)
+                barr += tile.metadata.to_bytes(2)
+                barr += tile.variation.to_bytes(2)
+        return base64.b64encode(barr).decode('utf-8')
 
 
     def setTile(self, tile: Tile):

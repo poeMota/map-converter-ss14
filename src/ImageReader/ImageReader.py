@@ -38,9 +38,8 @@ def ConvertImageToMap(path: str, colormap: dict):
     _map = Map()
     _map.tilemap = {
             "Space": 0,
-            "Plating": 256
         }
-    grid = Grid(_map, [], "grid", 0, 0)
+    grid = Grid(_map, [], (centerX, centerY), "grid", 0, 0)
 
     for x in range(width):
         for y in range(height):
