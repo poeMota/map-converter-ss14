@@ -1,6 +1,6 @@
 class EntitySelector:
-    def __init__(self, proto: str, name: str = "", description: str = "", tileName: str = "Plating"):
-        self.proto = proto
+    def __init__(self, protos: list[str], name: str = "", description: str = "", tileName: str = "Plating"):
+        self.protos = protos
         self.name = name
         self.description = description
         self.tileName = tileName # Tile name under the entity

@@ -66,13 +66,13 @@ def ConvertImageToMap(path: str, colormap: dict):
 
             # Add entities
             if type(selector) is EntitySelector:
-                Entity(
-                    proto       = selector.proto,
+                [Entity(
+                    proto       = proto,
                     pos         = [x, inv_y],
                     parent      = grid.uid,
                     name        = selector.name,
                     description = selector.description
-                )
+                ) for proto in selector.protos]
 
     _map.addGrid(grid)
     return _map
