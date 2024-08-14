@@ -10,6 +10,7 @@ import os
 
 if __name__ == '__main__':
     app = Window()
+    app.mainloop()
     #_tilesRefsManager = TilesRefsManager()
     #_map = ConvertImageToMap(
     #        path=os.getcwd() + "/.debug/test.png",
