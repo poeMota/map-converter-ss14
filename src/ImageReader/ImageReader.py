@@ -1,6 +1,8 @@
 from PIL import Image
 from src.GridSystem import Map, Grid, Chunk, Tile
 from src.Tiles import TilesRefsManager
+from src.EntitySystem import Entity
+from .selectors import *
 from math import floor
 
 
@@ -46,16 +48,27 @@ def ConvertImageToMap(path: str, colormap: dict):
         for y in range(height):
             inv_y = height - y - 1
             color = rgbaToHex(pixels[x, y])
-            if colormap[color][0] == "tile":
-                ind = [floor(x / chunkSize),
-                       floor(inv_y / chunkSize)]
-                strInd = f"{ind[0]},{ind[1]}"
-                if strInd not in grid.chunks:
-                    grid.AddChunk(Chunk(ind))
-                tile = Tile(x, inv_y, colormap[color][1])
-                grid.SetTile(tile, _tilesRefsMan)
-            elif colormap[color][0] == "entity":
-                pass
+            selector = colormap[color]
+
+            # Add tiles
+            ind = [floor(x / chunkSize),
+                   floor(inv_y / chunkSize)]
+            strInd = f"{ind[0]},{ind[1]}"
+            if strInd not in grid.chunks:
+                grid.AddChunk(Chunk(ind))
+
+            tile = Tile(x, inv_y, selector.tileName)
+            grid.SetTile(tile, _tilesRefsMan)
+
+            # Add entities
+            if type(selector) is EntitySelector:
+                Entity(
+                    proto       = selector.proto,
+                    pos         = [x, inv_y],
+                    parent      = grid.uid,
+                    name        = selector.name,
+                    description = selector.description
+                )
 
     _map.addGrid(grid)
     return _map

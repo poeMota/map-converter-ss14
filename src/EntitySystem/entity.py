@@ -3,7 +3,7 @@ from .EntityManager import EntitySystem
 
 
 class Entity:
-    def __init__(self, proto: str, pos: list, parent: str, name: str, description: str = ""):
+    def __init__(self, proto: str, pos: list, parent: int | str, name: str, description: str = ""):
         _entityMan = EntitySystem()
         self.uid = 0
         self.proto = proto
