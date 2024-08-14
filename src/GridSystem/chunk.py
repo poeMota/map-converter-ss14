@@ -34,9 +34,9 @@ class Chunk:
         for y in range(self.chunksize):
             for x in range(self.chunksize):
                 tile = self.tiles[y][x]
-                barr += tile.id.to_bytes(2)
-                barr += tile.metadata.to_bytes(2)
-                barr += tile.variation.to_bytes(2)
+                barr += tile.id.to_bytes(2, byteorder='little')
+                barr += tile.metadata.to_bytes(2, byteorder='little')
+                barr += tile.variation.to_bytes(2, byteorder='little')
         return base64.b64encode(barr).decode('utf-8')
 
 
