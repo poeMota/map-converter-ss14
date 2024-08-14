@@ -1,13 +1,17 @@
-from src.Components import Component
+from src.Components import *
 from .EntityManager import EntitySystem
 
 
 class Entity:
-    def __init__(self, proto: str = ""):
+    def __init__(self, proto: str, pos: list, parent: str, name: str, description: str = ""):
         _entityMan = EntitySystem()
         self.uid = 0
-        self.proto = "\"\""
-        self.components: list[Component] = []
+        self.proto = proto
+        self.parent = parent
+        self.components: list[Component] = [
+            TransformComponent(pos[0], pos[1], self.parent),
+            MetaDataComponent(name, description)
+        ]
 
         _entityMan.serialize_entity(self)
 
@@ -24,6 +28,8 @@ class Entity:
     def _serialize(self) -> dict:
         return {
             "uid": self.uid,
-            "components": [comp._serialize() for comp in self.components]
+            "components": [cmp for cmp in
+                            [comp._serialize() for comp in self.components]
+                          if cmp]
         }
 

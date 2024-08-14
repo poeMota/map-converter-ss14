@@ -8,17 +8,15 @@ from math import floor
 
 class Grid(Entity):
     def __init__(self, Map, chunks: list[Chunk], name: str, x: float, y: float):
-        Entity.__init__(self)
+        Entity.__init__(self, proto="\"\"", pos=[x, y], parent="invalid", name=name)
         self.chunks = {chunk.strInd(): chunk for chunk in chunks}
         self.map = Map
 
-        self.components: list[Component] = [
-            MetaDataComponent(name),
-            TransformComponent(x, y, "invalid"),
+        [self.AddComponent(comp) for comp in [
             MapGridComponent(self.chunks),
             BroadphaseComponent(),
             PhysicsComponent(),
-            FixturesComponent(),
+            FixturesComponent({}),
             GravityComponent(),
             DecalGridComponent(),
             #GridAtmosphereComponent(),
@@ -26,9 +24,9 @@ class Grid(Entity):
             ShuttleComponent(),
             GridPathfindingComponent(),
             SpreaderGridComponent(),
-            GravityShakeComponent(),
+            GravityShakeComponent(10),
             GasTileOverlayComponent(),
-        ]
+        ]]
         self.map.addGrid(self)
 
 

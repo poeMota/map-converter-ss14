@@ -12,18 +12,18 @@ if __name__ == '__main__':
     _map = ConvertImageToMap(
             path=os.getcwd() + "/.debug/test.png",
             colormap={
-                      '#00000000': "Space",
-                      '#000000fe01': "Plating",
-                      '#007f7ffe01': "Plating",
-                      '#c6c6c6fe01': "Plating",
-                      '#7f6a00fe01': "Plating",
-                      '#404040fe01': "Plating",
-                      '#808080fe01': "Plating",
-                      '#7f6e6bfe01': "Plating",
-                      '#5c9035fe01': "Plating",
-                      '#ffdc6bfe01': "Plating",
-                      '#2f7b8bfe01': "Plating",
-                      '#93774bfe01': "Plating"
+                      '#00000000': ["tile", "Space"],
+                      '#000000fe01': ["tile", "Plating"],
+                      '#007f7ffe01': ["tile", "Plating"],
+                      '#c6c6c6fe01': ["tile", "Plating"],
+                      '#7f6a00fe01': ["tile", "Plating"],
+                      '#404040fe01': ["tile", "Plating"],
+                      '#808080fe01': ["tile", "Plating"],
+                      '#7f6e6bfe01': ["tile", "Plating"],
+                      '#5c9035fe01': ["tile", "Plating"],
+                      '#ffdc6bfe01': ["tile", "Plating"],
+                      '#2f7b8bfe01': ["tile", "Plating"],
+                      '#93774bfe01': ["tile", "Plating"]
                     }
         )
     yaml.write(os.getcwd() + "/.debug/test.yml", _map._serialize())
