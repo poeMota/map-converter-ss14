@@ -3,7 +3,8 @@ from tkinter import filedialog, colorchooser
 from PIL import Image
 from enum import Enum
 
-from src.ImageReader import ConvertImageToMap, GetImageColormap
+from src.ImageReader import *
+from src.Tiles import TilesRefsManager
 
 
 class Frames(Enum):
@@ -32,6 +33,15 @@ class Window(ctk.CTk):
 
         # Show firt frame
         self.frames[Frames.Image].pack(fill="both", expand=True)
+
+        self.colorConfig = {"#00000000": TileSelector("Space")}
+        self.colormap = {}
+        self.fullColors = {} # #RRGGBB: #RRGGBBAA            
+        self.tiles = list(TilesRefsManager().tileRefs.keys())
+
+
+    def setup_colormap(self, color: str, selector):
+        self.colormap[self.fullColors[color]] = selector
 
 
     def change_frame(self, value):
@@ -76,6 +86,8 @@ class ImageFrame(ctk.CTkFrame):
             self._initialized = True
 
 
+
+
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.png")])
         if file_path:
@@ -91,6 +103,9 @@ class ImageFrame(ctk.CTkFrame):
             # Update settings frame
             _settingsFrame = SettingsFrame(self.master)
             colormap = GetImageColormap(file_path)
+            for color in colormap:
+                self.master.fullColors[color[:7]] = color
+
             _settingsFrame.set_options([color[:7] for color in colormap if color[7:] != "00"])
 
 
@@ -153,7 +168,11 @@ class SettingsFrame(ctk.CTkFrame):
     def create_option_row(self, color):
         row_frame = ctk.CTkFrame(self.scrollable_frame)
         row_frame.pack(fill="x", pady=5, padx=10)
+
+        baseTile = "Plating"
+
         self.frames.append(row_frame)
+        self.master.setup_colormap(color, TileSelector(baseTile))
 
         # Selectors option menu
         option_menu = ctk.CTkOptionMenu(row_frame, 
@@ -166,9 +185,12 @@ class SettingsFrame(ctk.CTkFrame):
         entityEntry = ctk.CTkEntry(row_frame, width=200)
 
         # TileName selector
-        tileEntry = ctk.CTkEntry(row_frame, width=200)
+        '''tileEntry = ctk.CTkEntry(row_frame, width=200)
         tileEntry.pack(side="left", padx=10, pady=10)
-        tileEntry.insert(0, "Plating")
+        tileEntry.insert(0, baseTile)'''
+        tileOption = ctk.CTkOptionMenu(row_frame,
+                                       values=self.master.tiles)
+        tileOption.pack(side="left", padx=10, pady=10)
 
         # Color square
         color_label = ctk.CTkLabel(row_frame, width=30, height=30, text="", fg_color=color)
