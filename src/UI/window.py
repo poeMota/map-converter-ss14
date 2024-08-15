@@ -5,6 +5,7 @@ from enum import Enum
 
 from src.ImageReader import *
 from src.Tiles import TilesRefsManager
+from src.ColorHelper import *
 
 
 class Frames(Enum):
@@ -35,13 +36,13 @@ class Window(ctk.CTk):
         self.frames[Frames.Image].pack(fill="both", expand=True)
 
         self.colorConfig = {"#00000000": TileSelector("Space")}
-        self.colormap = {}
-        self.fullColors = {} # #RRGGBB: #RRGGBBAA            
         self.tiles = list(TilesRefsManager().tileRefs.keys())
 
 
-    def setup_colormap(self, color: str, selector):
-        self.colormap[self.fullColors[color]] = selector
+    def setup_colormap(self):
+        settingsFrame = self.frames[Frames.Settings]
+        for color in settingsFrame.frames:
+            self.colorConfig[color] = settingsFrame.frames[color].getOutput()
 
 
     def change_frame(self, value):
@@ -50,6 +51,16 @@ class Window(ctk.CTk):
 
         # Show selected frame
         self.frames[Frames(value)].pack(fill="both", expand=True)
+    
+
+    def autogen_config(self):
+        _tilesRefsManager = TilesRefsManager()
+        settingsFrame = self.frames[Frames.Settings]
+        for color in settingsFrame.frames:
+            row: ConfigRow = settingsFrame.frames[color]
+            tileColor = FindClosestColor(color, _tilesRefsManager.colorRefs.keys())
+            row.setValues(Selectors.Tile, tile=_tilesRefsManager.colorRefs[tileColor])
+        self.setup_colormap()
 
 
 class ImageFrame(ctk.CTkFrame):
@@ -86,8 +97,6 @@ class ImageFrame(ctk.CTkFrame):
             self._initialized = True
 
 
-
-
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.png")])
         if file_path:
@@ -103,10 +112,7 @@ class ImageFrame(ctk.CTkFrame):
             # Update settings frame
             _settingsFrame = SettingsFrame(self.master)
             colormap = GetImageColormap(file_path)
-            for color in colormap:
-                self.master.fullColors[color[:7]] = color
-
-            _settingsFrame.set_options([color[:7] for color in colormap if color[7:] != "00"])
+            _settingsFrame.set_options(colormap)
 
 
     def select_output_path(self):
@@ -131,7 +137,7 @@ class SettingsFrame(ctk.CTkFrame):
     def __init__(self, master):
         if not self._initialized:
             super().__init__(master)
-            self.frames: list[ctk.CTkFrame] = []
+            self.frames: dict = {}
 
             self.upper_frame = ctk.CTkFrame(self)
             self.upper_frame.pack(fill="x", padx=20, pady=5)
@@ -141,7 +147,7 @@ class SettingsFrame(ctk.CTkFrame):
 
 
             # Autogenerate config button
-            self.autogen_button = ctk.CTkButton(self.upper_frame, text="Autogenerate", command=self.autogenerate_config)
+            self.autogen_button = ctk.CTkButton(self.upper_frame, text="Autogenerate", command=master.autogen_config)
             self.autogen_button.pack(side="right")
 
             # Labels
@@ -161,48 +167,73 @@ class SettingsFrame(ctk.CTkFrame):
 
 
     def set_options(self, colormap: list[str]):
-        [frame.pack_forget() for frame in self.frames]
-        [self.create_option_row(color) for color in colormap]
+        [frame.pack_forget() for frame in self.frames.values()]
+        for color in colormap:
+            if color[7:] != '0':
+                row_frame = ConfigRow(self.scrollable_frame, HEX8ToHEX6(color))
+                row_frame.pack(fill="x", pady=5, padx=10)
+                
+                self.frames[color] = row_frame
 
 
-    def create_option_row(self, color):
-        row_frame = ctk.CTkFrame(self.scrollable_frame)
-        row_frame.pack(fill="x", pady=5, padx=10)
-
+class ConfigRow(ctk.CTkFrame):
+    def __init__(self, master, color):
+        super().__init__(master)
+        self.color = color
         baseTile = "Plating"
 
-        self.frames.append(row_frame)
-        self.master.setup_colormap(color, TileSelector(baseTile))
-
         # Selectors option menu
-        option_menu = ctk.CTkOptionMenu(row_frame, 
+        self.optionMenu = ctk.CTkOptionMenu(self, 
                                         values=[Selectors.Tile.value, Selectors.Entity.value], 
-                                        command=lambda value: self.change_selector(value, entityEntry))
-        option_menu.pack(side="left", padx=10, pady=10)
-        option_menu.set(Selectors.Tile.value)
+                                        command=lambda value: self.change_selector(value))
+        self.optionMenu.pack(side="left", padx=10, pady=10)
+        self.optionMenu.set(Selectors.Tile.value)
 
         # Entity protoName selector
-        entityEntry = ctk.CTkEntry(row_frame, width=200)
+        self.entityEntry = ctk.CTkEntry(self, width=200)
 
         # TileName selector
-        '''tileEntry = ctk.CTkEntry(row_frame, width=200)
-        tileEntry.pack(side="left", padx=10, pady=10)
-        tileEntry.insert(0, baseTile)'''
-        tileOption = ctk.CTkOptionMenu(row_frame,
-                                       values=self.master.tiles)
-        tileOption.pack(side="left", padx=10, pady=10)
+        self.tileEntry = ctk.CTkEntry(self, width=200)
+        self.tileEntry.pack(side="left", padx=10, pady=10)
+        self.tileEntry.insert(0, baseTile)
 
         # Color square
-        color_label = ctk.CTkLabel(row_frame, width=30, height=30, text="", fg_color=color)
-        color_label.pack(side="right", pady=10, padx=10)
+        self.colorLabel = ctk.CTkLabel(self, width=30, height=30, text="", fg_color=HEX8ToHEX6(self.color))
+        self.colorLabel.pack(side="right", pady=10, padx=10)
+
+
+    def change_selector(self, value: str):
+        if value == Selectors.Entity.value:
+            self.entityEntry.pack(side="left", padx=10, pady=10)
+        elif value == Selectors.Tile.value:
+            self.entityEntry.pack_forget()
+
+
+    def setValues(self, option: Selectors = None, tile: str = None, proto: str = None, color = None):
+        if option:
+            self.optionMenu.set(option.value)
+        if tile:
+            self.tileEntry.delete(0, ctk.END)
+            self.tileEntry.insert(0, tile)
+        if proto:
+            self.entityEntry.delete(0, ctk.END)
+            self.entityEntry.insert(0, proto)
+        if color:
+            self.colorLabel.configure(fg_color=color)
     
 
-    def autogenerate_config(self):
-        pass
+    def getOutput(self):
+        if self.optionMenu.get() == Selectors.Entity.value:
+            if not self.entityEntry.get():
+                return
 
+            protos = self.entityEntry.get().strip().split(' ')
+            tile = self.tileEntry.get().strip()
 
-    def change_selector(self, value: str, entEntry: ctk.CTkEntry):
-        if value == Selectors.Entity.value:
-            entEntry.pack(side="left", padx=10, pady=10)
-        elif value == Selectors.Tile.value:
-            entEntry.pack_forget()
+            return EntitySelector(protos, tileName=tile)
+        elif self.optionMenu.get() == Selectors.Tile.value:
+            if not self.tileEntry.get():
+                return
+
+            tile = self.tileEntry.get().strip()
+            return TileSelector(tile)

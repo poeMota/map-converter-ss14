@@ -1,33 +1,12 @@
 from PIL import Image
+from math import floor
+
 from src.GridSystem import Map, Grid, Chunk, Tile
 from src.Tiles import TilesRefsManager
 from src.EntitySystem import Entity
+from src.ColorHelper import *
 from .selectors import *
-from math import floor
 
-
-def GetImageColormap(path: str):
-    img = Image.open(path).convert('RGBA')
-    pixels = img.load()
-    width, height = img.size
-
-    colormap = []
-    for y in range(height):
-        for x in range(width):
-            color = rgbaToHex(pixels[x, y])
-            if color not in colormap:
-                colormap.append(color)
-
-    return colormap
-
-
-def rgbToHex(rgb: list):
-    return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
-
-
-def rgbaToHex(rgba):
-    r, g, b, a = rgba
-    return "#{:02x}{:02x}{:02x}{:02x}".format(r, g, b, int(a * 255))
 
 
 def ConvertImageToMap(path: str, colormap: dict):
@@ -35,11 +14,9 @@ def ConvertImageToMap(path: str, colormap: dict):
 
     img = Image.open(path).convert('RGBA')
     pixels = img.load()
-    width, height = img.size
 
+    width, height = img.size
     chunkSize = 16
-    chunksY = floor(height / chunkSize)
-    chunksX = floor(width / chunkSize)
 
     _map = Map()
     grid = Grid(_map, [],
