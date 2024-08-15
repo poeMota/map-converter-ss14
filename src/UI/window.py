@@ -36,12 +36,13 @@ class Window(ctk.CTk):
         # Show firt frame
         self.frames[Frames.Image].pack(fill="both", expand=True)
 
-        self.colorConfig = {"#0000000": TileSelector("Space")}
+        self.colorConfig = None
         self.tiles = list(TilesRefsManager().tileRefs.keys())
 
 
     def setup_colormap(self):
         settingsFrame = SettingsFrame(self)
+        self.colorConfig = {"#0000000": TileSelector("Space")}
         for color in settingsFrame.frames:
             self.colorConfig[color] = settingsFrame.frames[color].getOutput()
 
@@ -99,7 +100,7 @@ class ImageFrame(ctk.CTkFrame):
             self.right_frame.pack(side="right", fill="y", padx=20, pady=20)
 
             # Image frame
-            self.image_label = ctk.CTkLabel(self.left_frame, text="Select the image you want to convert", height=600, fg_color="gray", corner_radius=10)
+            self.image_label = ctk.CTkLabel(self.left_frame, text="Select the image you want to convert", height=600, corner_radius=10)
             self.image_label.pack(fill="x")
 
             # Choose image button
@@ -177,15 +178,15 @@ class SettingsFrame(ctk.CTkFrame):
 
             # Labels
             self.tileTitle = ctk.CTkLabel(
-                self.upper_frame, 
-                text="Title name", 
+                self.upper_frame,
+                text="Title name",
                 fg_color="#4a4a4a",
                 width=200)
             self.tileTitle.pack(side="left", padx=(185, 0))
 
             self.entityTitle = ctk.CTkLabel(
-                self.upper_frame, 
-                text="Entity proto", 
+                self.upper_frame,
+                text="Entity proto",
                 fg_color="#4a4a4a",
                 width=200)
             self.entityTitle.pack(side="left", padx=(21, 0)) # Pixelhunting
@@ -210,8 +211,8 @@ class ConfigRow(ctk.CTkFrame):
         baseTile = "Plating"
 
         # Selectors option menu
-        self.optionMenu = ctk.CTkOptionMenu(self, 
-                                        values=[Selectors.Tile.value, Selectors.Entity.value], 
+        self.optionMenu = ctk.CTkOptionMenu(self,
+                                        values=[Selectors.Tile.value, Selectors.Entity.value],
                                         command=lambda value: self.change_selector(value))
         self.optionMenu.pack(side="left", padx=10, pady=10)
         self.optionMenu.set(Selectors.Tile.value)
