@@ -9,12 +9,10 @@ from .selectors import *
 
 
 
-def ConvertImageToMap(path: str, colormap: dict):
+def ConvertImageToMap(img: Image, colormap: dict):
     _tilesRefsMan = TilesRefsManager()
 
-    img = Image.open(path).convert('RGBA')
     pixels = img.load()
-
     width, height = img.size
     chunkSize = 16
 

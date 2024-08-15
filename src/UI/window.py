@@ -1,8 +1,9 @@
 import customtkinter as ctk
-from tkinter import filedialog, colorchooser
+from tkinter import filedialog
 from PIL import Image
 from enum import Enum
 
+import src.yaml as yaml
 from src.ImageReader import *
 from src.Tiles import TilesRefsManager
 from src.ColorHelper import *
@@ -35,12 +36,12 @@ class Window(ctk.CTk):
         # Show firt frame
         self.frames[Frames.Image].pack(fill="both", expand=True)
 
-        self.colorConfig = {"#00000000": TileSelector("Space")}
+        self.colorConfig = {"#0000000": TileSelector("Space")}
         self.tiles = list(TilesRefsManager().tileRefs.keys())
 
 
     def setup_colormap(self):
-        settingsFrame = self.frames[Frames.Settings]
+        settingsFrame = SettingsFrame(self)
         for color in settingsFrame.frames:
             self.colorConfig[color] = settingsFrame.frames[color].getOutput()
 
@@ -55,12 +56,29 @@ class Window(ctk.CTk):
 
     def autogen_config(self):
         _tilesRefsManager = TilesRefsManager()
-        settingsFrame = self.frames[Frames.Settings]
+        settingsFrame = SettingsFrame(self)
         for color in settingsFrame.frames:
             row: ConfigRow = settingsFrame.frames[color]
             tileColor = FindClosestColor(color, _tilesRefsManager.colorRefs.keys())
             row.setValues(Selectors.Tile, tile=_tilesRefsManager.colorRefs[tileColor])
         self.setup_colormap()
+    
+
+    def convert_image(self):
+        imageFrame = ImageFrame(self)
+        self.setup_colormap()
+
+        if not imageFrame.image:
+            print("ERROR: image not selected")
+            return
+        
+        if not imageFrame.output_path:
+            print("ERROR: output path not selected")
+            return
+        
+        _map = ConvertImageToMap(imageFrame.image, self.colorConfig)
+        yaml.write(imageFrame.output_path + imageFrame.fileName, _map._serialize())
+        print("Image converted to path: " + imageFrame.output_path + imageFrame.fileName)
 
 
 class ImageFrame(ctk.CTkFrame):
@@ -82,16 +100,22 @@ class ImageFrame(ctk.CTkFrame):
 
             # Image frame
             self.image_label = ctk.CTkLabel(self.left_frame, text="Select the image you want to convert", height=600, fg_color="gray", corner_radius=10)
-            self.image_label.pack(pady=0, fill="x")
+            self.image_label.pack(fill="x")
 
             # Choose image button
             self.select_image_button = ctk.CTkButton(self.right_frame, text="Choose image", command=self.select_image)
-            self.select_image_button.pack(pady=0)
+            self.select_image_button.pack(pady=10)
 
             # Choose out path button
             self.output_path_button = ctk.CTkButton(self.right_frame, text="Choose output path", command=self.select_output_path)
-            self.output_path_button.pack(pady=10)
+            self.output_path_button.pack(pady=0)
 
+            # Convert button
+            self.convert_button = ctk.CTkButton(self.right_frame, text="Convert to map", command=master.convert_image)
+            self.convert_button.pack(pady=10, padx=5, side="bottom")
+
+            self.image = None
+            self.fileName = ""
             self.output_path = ""
 
             self._initialized = True
@@ -101,6 +125,7 @@ class ImageFrame(ctk.CTkFrame):
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.png")])
         if file_path:
             image = Image.open(file_path)
+            self.image = image.convert("RGBA")
 
             width, height = image.size
             resize = min(self.image_label.winfo_height() / width, self.image_label.winfo_height() / height)
@@ -111,14 +136,14 @@ class ImageFrame(ctk.CTkFrame):
 
             # Update settings frame
             _settingsFrame = SettingsFrame(self.master)
-            colormap = GetImageColormap(file_path)
-            _settingsFrame.set_options(colormap)
+            _settingsFrame.set_options(GetImageColormap(file_path))
+
+            self.fileName = '/' + file_path.split('/')[-1].split('.')[0] + ".yml"
 
 
     def select_output_path(self):
-        self.output_path = filedialog.askdirectory()
-        if self.output_path:
-            print(f"Путь для сохранения: {self.output_path}")
+        path = filedialog.askdirectory()
+        if path: self.output_path = path
 
 
 class Selectors(Enum):
@@ -164,6 +189,8 @@ class SettingsFrame(ctk.CTkFrame):
                 fg_color="#4a4a4a",
                 width=200)
             self.entityTitle.pack(side="left", padx=(21, 0)) # Pixelhunting
+
+            self._initialized = True
 
 
     def set_options(self, colormap: list[str]):
