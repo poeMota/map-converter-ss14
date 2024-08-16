@@ -58,7 +58,7 @@ class Window(ctk.CTk):
         _tilesRefsManager = TilesRefsManager()
         settingsFrame = SettingsFrame(self)
         for color in settingsFrame.frames:
-            row: ConfigRow = settingsFrame.frames[color]
+            row = settingsFrame.frames[color]
             tileColor = FindClosestColor(color, _tilesRefsManager.colorRefs.keys())
             row.setValues(Selectors.Tile, tile=_tilesRefsManager.colorRefs[tileColor])
         self.setup_colormap()
@@ -74,7 +74,7 @@ class Window(ctk.CTk):
             print("ERROR: image not selected")
             return
 
-        if not settings.output_path:
+        if not settings.outPath:
             print("ERROR: output path not selected")
             return
 
@@ -82,7 +82,7 @@ class Window(ctk.CTk):
             print("ERROR: output filename not selected")
             return
 
-        _map = ConvertImageToMap(settings.image, self.colorConfig)
+        _map = ConvertImageToMap(settings.image, settings.colorConfig)
         yaml.write(settings.outPath + settings.outFileName, _map._serialize())
         print("Image converted to path: " + settings.outPath + settings.outFileName)
 

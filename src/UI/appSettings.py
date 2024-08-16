@@ -20,11 +20,12 @@ class GlobalSettings:
 
 
     def __init__(self):
-        self.image = None
-        self.outPath = None
-        self.outFileName = None
+        if not self._initialized:
+            self.image = None
+            self.outPath = None
+            self.outFileName = None
 
-        self.colorConfig = {} # color: selector
+            self.colorConfig = {} # color: selector
 
-        self._initialized = True
+            self._initialized = True
 

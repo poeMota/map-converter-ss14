@@ -1,5 +1,8 @@
 import customtkinter as ctk
+
 from .appSettings import *
+from src.ColorHelper import *
+from src.ImageReader import *
 
 
 class ConfigRow(ctk.CTkFrame):
