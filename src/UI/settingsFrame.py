@@ -29,12 +29,19 @@ class SettingsFrame(ctk.CTkFrame):
             self.autogen_button.pack(side="right")
 
             # Labels
+            self.typeLabel = ctk.CTkLabel(
+                self.upper_frame,
+                text="Type",
+                fg_color="#4a4a4a",
+                width=140)
+            self.typeLabel.pack(side="left", padx=(25, 0))
+
             self.tileTitle = ctk.CTkLabel(
                 self.upper_frame,
                 text="Title name",
                 fg_color="#4a4a4a",
                 width=200)
-            self.tileTitle.pack(side="left", padx=(185, 0))
+            self.tileTitle.pack(side="left", padx=(20, 0))
 
             self.entityTitle = ctk.CTkLabel(
                 self.upper_frame,
