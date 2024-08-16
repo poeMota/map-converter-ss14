@@ -9,7 +9,7 @@ class Map:
         self.format = formatId
         self.postmapinit = postmapinit
 
-        self.usedTiles = []
+        self.usedTiles = ["Space"]
 
 
     def addGrid(self, grid: Grid) -> bool:
