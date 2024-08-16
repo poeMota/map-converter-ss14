@@ -24,6 +24,7 @@ class GlobalSettings:
             self.image = None
             self.outPath = None
             self.outFileName = None
+            self.outFileEntry = None
 
             self.colorConfig = {} # color: selector
 

@@ -20,6 +20,7 @@ class ConfigRow(ctk.CTkFrame):
 
         # Entity protoName selector
         self.entityEntry = ctk.CTkEntry(self, width=200)
+        self.entityEntry.insert(0, "")
 
         # TileName selector
         self.tileEntry = ctk.CTkEntry(self, width=200)

@@ -43,8 +43,12 @@ class ImageFrame(ctk.CTkFrame):
             # Filename entry
             self.filename_entry = ctk.CTkEntry(self.right_frame)
             self.filename_entry.pack(pady=0, side="bottom")
+            self.filename_entry.insert(0, "")
+
             self.filename_label = ctk.CTkLabel(self.right_frame, text="Enter out file name")
             self.filename_label.pack(side="bottom")
+
+            GlobalSettings().outFileEntry = self.filename_entry
 
             self._initialized = True
 

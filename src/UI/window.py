@@ -65,9 +65,8 @@ class Window(ctk.CTk):
 
 
     def convert_image(self):
-        imageFrame = ImageFrame(self)
         settings = GlobalSettings()
-        settings.outFileName = imageFrame.filename_entry.get().removesuffix('.yml') + '.yml'
+        settings.outFileName = settings.outFileEntry.get().strip().removesuffix('.yml') + '.yml'
         self.setup_colormap()
 
         if not settings.image:
@@ -78,7 +77,7 @@ class Window(ctk.CTk):
             print("ERROR: output path not selected")
             return
 
-        if not settings.outFileName.strip():
+        if not settings.outFileName:
             print("ERROR: output filename not selected")
             return
 
