@@ -1,7 +1,5 @@
 import customtkinter as ctk
-from tkinter import filedialog
 from PIL import Image
-from enum import Enum
 
 import src.yaml as yaml
 from src.ImageReader import *
@@ -36,15 +34,16 @@ class Window(ctk.CTk):
         # Show firt frame
         self.frames[Frames.Image].pack(fill="both", expand=True)
 
-        self.colorConfig = None
         self.tiles = list(TilesRefsManager().tileRefs.keys())
 
 
     def setup_colormap(self):
         settingsFrame = SettingsFrame(self)
-        self.colorConfig = {"#0000000": TileSelector("Space")}
+
+        settings = GlobalSettings()
+        settings.colorConfig = {"#0000000": TileSelector("Space")}
         for color in settingsFrame.frames:
-            self.colorConfig[color] = settingsFrame.frames[color].getOutput()
+            settings.colorConfig[color] = settingsFrame.frames[color].getOutput()
 
 
     def change_frame(self, value):
@@ -67,17 +66,23 @@ class Window(ctk.CTk):
 
     def convert_image(self):
         imageFrame = ImageFrame(self)
+        settings = GlobalSettings()
+        settings.outFileName = imageFrame.filename_entry.get().removesuffix('.yml') + '.yml'
         self.setup_colormap()
 
-        if not imageFrame.image:
+        if not settings.image:
             print("ERROR: image not selected")
             return
 
-        if not imageFrame.output_path:
+        if not settings.output_path:
             print("ERROR: output path not selected")
             return
 
-        _map = ConvertImageToMap(imageFrame.image, self.colorConfig)
-        yaml.write(imageFrame.output_path + imageFrame.fileName, _map._serialize())
-        print("Image converted to path: " + imageFrame.output_path + imageFrame.fileName)
+        if not settings.outFileName.strip():
+            print("ERROR: output filename not selected")
+            return
+
+        _map = ConvertImageToMap(settings.image, self.colorConfig)
+        yaml.write(settings.outPath + settings.outFileName, _map._serialize())
+        print("Image converted to path: " + settings.outPath + settings.outFileName)
 

@@ -4,6 +4,7 @@ from tkinter import filedialog
 
 from .settingsFrame import SettingsFrame
 from src.ColorHelper import *
+from .appSettings import *
 
 
 class ImageFrame(ctk.CTkFrame):
@@ -39,9 +40,9 @@ class ImageFrame(ctk.CTkFrame):
             self.convert_button = ctk.CTkButton(self.right_frame, text="Convert to map", command=master.convert_image)
             self.convert_button.pack(pady=10, padx=5, side="bottom")
 
-            self.image = None
-            self.fileName = ""
-            self.output_path = ""
+            # Filename entry
+            self.filename_entry = ctk.CTkEntry(self.right_frame)
+            self.filename_entry.pack(pady=10, side="bottom")
 
             self._initialized = True
 
@@ -49,8 +50,9 @@ class ImageFrame(ctk.CTkFrame):
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.png")])
         if file_path:
+            settings = GlobalSettings()
             image = Image.open(file_path)
-            self.image = image.convert("RGBA")
+            settings.image = image.convert("RGBA")
 
             width, height = image.size
             resize = min(self.image_label.winfo_height() / width, self.image_label.winfo_height() / height)
@@ -63,10 +65,10 @@ class ImageFrame(ctk.CTkFrame):
             _settingsFrame = SettingsFrame(self.master)
             _settingsFrame.set_options(GetImageColormap(file_path))
 
-            self.fileName = '/' + file_path.split('/')[-1].split('.')[0] + ".yml"
+            settings.fileName = '/' + file_path.split('/')[-1].split('.')[0] + ".yml"
 
 
     def select_output_path(self):
         path = filedialog.askdirectory()
-        if path: self.output_path = path
+        if path: GlobalSettings().outPath = path
 
