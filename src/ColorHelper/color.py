@@ -14,10 +14,10 @@ def rgbaToHex(rgba):
 def hexToRgba(hex_color):
     hex_color = hex_color.lstrip('#')
 
-    if len(hex_color) == 6:  # RRGGBB
+    if len(hex_color) == 6:  #RRGGBB
         r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
         a = 255
-    else:  # #RRGGBBAA
+    else:  #RRGGBBAA
         r, g, b, a = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16), int(hex_color[6:8], 16)
 
     return (r, g, b, a)
@@ -53,7 +53,7 @@ def AvargeColor(colors: list[list]) -> str:
     return rgba
 
 
-def GetImageColormap(path: Image, convert = rgbaToHex):
+def GetImageColormap(img: Image, convert = rgbaToHex):
     pixels = img.load()
     width, height = img.size
 

@@ -61,9 +61,12 @@ class ImageFrame(ctk.CTkFrame):
             image = Image.open(file_path)
 
             if '.png' in file_path:
-                settings.image = image.convert("RGBA")
+                image = image.convert("RGBA")
             else:
-                settings.image = image.convert("RGB")
+                image = image.convert("RGB")
+
+            imageColormap = GetImageColormap(image)
+            settings.image = image
 
             width, height = image.size
             resize = min(self.image_label.winfo_height() / width, self.image_label.winfo_height() / height)
@@ -74,7 +77,7 @@ class ImageFrame(ctk.CTkFrame):
 
             # Update settings frame
             _settingsFrame = SettingsFrame(self.master)
-            _settingsFrame.set_options(GetImageColormap(file_path))
+            _settingsFrame.set_options(imageColormap)
 
             print(f"Open image from {file_path}")
 

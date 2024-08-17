@@ -1,4 +1,5 @@
 import os
+from PIL import Image
 
 import src.yaml as yaml
 from src.ColorHelper import *
@@ -44,5 +45,7 @@ class TilesRefsManager:
     def getColorRefs(self):
         for proto in self.prototypes:
             if "sprite" in proto:
-                colors = GetImageColormap(self.texturesPath + proto["sprite"], None)
+                image = Image.open(self.texturesPath + proto["sprite"]).convert("RGBA")
+                colors = GetImageColormap(image, None)
                 self.colorRefs[rgbaToHex(AvargeColor(colors))] = proto["id"]
+
