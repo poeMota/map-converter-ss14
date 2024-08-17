@@ -6,7 +6,7 @@
 ![image](https://github.com/user-attachments/assets/6b0e3c3d-31ad-435d-ad0f-626a57629f70)
 
 ## Installing
-To install, you must have (python)[https://www.python.org/downloads/] and (git)[https://git-scm.com/downloads]
+To install, you must have [python](https://www.python.org/downloads/) and [git](https://git-scm.com/downloads)
 ### 1. Clone this repo
 ```git clone https://github.com/poeMota/map-converter-ss14```
 
