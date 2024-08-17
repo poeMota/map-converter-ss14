@@ -72,8 +72,12 @@ class ImageFrame(ctk.CTkFrame):
             _settingsFrame = SettingsFrame(self.master)
             _settingsFrame.set_options(GetImageColormap(file_path))
 
+            print(f"Open image from {file_path}")
+
 
     def select_output_path(self):
         path = filedialog.askdirectory() + '/'
-        if path: GlobalSettings().outPath = path
+        if path:
+            GlobalSettings().outPath = path
+            print("Output path selected: {path}")
 
