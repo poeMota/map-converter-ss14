@@ -12,6 +12,7 @@ IF %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
+git submodule init
 git submodule update
 pip install -r requirements.txt
 

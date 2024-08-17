@@ -10,6 +10,7 @@ if ! command -v pip3 &> /dev/null; then
 fi
 
 
+git submodule init
 git submodule update
 pip install -r requirements.txt
 
