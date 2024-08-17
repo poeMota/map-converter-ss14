@@ -6,13 +6,18 @@
 ![image](https://github.com/user-attachments/assets/6b0e3c3d-31ad-435d-ad0f-626a57629f70)
 
 ## Installing
+To install, you must have (python)[https://www.python.org/downloads/] and (git)[https://git-scm.com/downloads]
 ### 1. Clone this repo
 ```git clone https://github.com/poeMota/map-converter-ss14```
-### 2. Then open the downloaded folder in the terminal and clone submodules
-```git submodule update```
-### 3. Install dependencies
-```pip install -r requirements.txt```
-### 4. Now you can run the application
+
+### 2. Install dependencies
+- Windows:
+  run `install.bat`
+  
+- Linux
+  run `install.sh` from terminal
+
+### 3. Now you can run the application
 ```python main.py```
 
 ## Work in progress
