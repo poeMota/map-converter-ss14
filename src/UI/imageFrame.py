@@ -55,7 +55,7 @@ class ImageFrame(ctk.CTkFrame):
 
 
     def select_image(self):
-        file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.png")])
+        file_path = filedialog.askopenfilename(filetypes=[("PNG", ".png"), ("JPEG", ".jpg")])
         if file_path:
             settings = GlobalSettings()
             image = Image.open(file_path)
