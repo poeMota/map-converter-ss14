@@ -40,3 +40,20 @@ class PopupWindow(ctk.CTkToplevel):
         self.grab_release()
         self.destroy()
 
+
+class ColorsWarningPopup(PopupWindow):
+    def __init__(self, master, title: str, message: str, command, width=300, height=150, buttonLabel: str = "Convert"):
+        super().__init__(master, title, message, width, height, buttlonLabel)
+        self.close_button.pack(pady=10, padx=10, side="right")
+        self.command = command
+
+        self.option = ctk.CTkOptionMenu(self,
+                                        values=["16 bit", "8 bit", "4 bit"])
+        self.option.set("16 bit")
+
+
+    def close_window(self):
+        self.grab_release()
+        self.destroy()
+        self.command(int(self.option.get().split(' ')[0]))
+

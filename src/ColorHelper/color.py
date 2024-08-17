@@ -53,6 +53,7 @@ def AvargeColor(colors: list[list]) -> str:
     return rgba
 
 
+# TODO - optimize this
 def GetImageColormap(img: Image, convert = rgbaToHex):
     pixels = img.load()
     width, height = img.size

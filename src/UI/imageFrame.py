@@ -6,6 +6,7 @@ from .settingsFrame import SettingsFrame
 from src.ColorHelper import *
 from .appSettings import *
 from .optionMenu import OptionEntry
+from .popup import ColorsWarningPopup
 
 
 class ImageFrame(ctk.CTkFrame):
@@ -57,29 +58,45 @@ class ImageFrame(ctk.CTkFrame):
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("PNG", ".png"), ("JPEG", ".jpg")])
         if file_path:
-            settings = GlobalSettings()
             image = Image.open(file_path)
 
+            print("Collecting image colormap...")
             if '.png' in file_path:
                 image = image.convert("RGBA")
+                imageColormap = GetImageColormap(image)
             else:
                 image = image.convert("RGB")
+                imageColormap = GetImageColormap(image, rgbToHex)
 
+
+            colorsLimit = 100
+            if len(imageColormap) > colorsLimit:
+                ColorsWarningPopup(self,
+                                   "Warning",
+                                   "The image contains too many colours, the program will work unstably, it is recommended to convert the image to a format with fewer bits.",
+                                   lambda value: self._select_image(image.convert(f"I;{value}").convert("RGB")))
+            else:
+                self._select_image(image, imageColormap)
+                print(f"Open image from {file_path}")
+
+
+    def _select_image(self, image: Image, imageColormap = None):
+        settings = GlobalSettings()
+        settings.image = image
+
+        if not imageColormap:
             imageColormap = GetImageColormap(image)
-            settings.image = image
 
-            width, height = image.size
-            resize = min(self.image_label.winfo_height() / width, self.image_label.winfo_height() / height)
+        width, height = image.size
+        resize = min(self.image_label.winfo_height() / width, self.image_label.winfo_height() / height)
 
-            ctk_image = ctk.CTkImage(image, size=(width * resize, height * resize))
-            self.image_label.configure(image=ctk_image, text="")
-            self.image_label.image = ctk_image
+        ctk_image = ctk.CTkImage(image, size=(width * resize, height * resize))
+        self.image_label.configure(image=ctk_image, text="")
+        self.image_label.image = ctk_image
 
-            # Update settings frame
-            _settingsFrame = SettingsFrame(self.master)
-            _settingsFrame.set_options(imageColormap)
-
-            print(f"Open image from {file_path}")
+        # Update settings frame
+        _settingsFrame = SettingsFrame(self.master)
+        _settingsFrame.set_options(imageColormap)
 
 
     def select_output_path(self):
