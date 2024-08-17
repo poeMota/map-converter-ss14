@@ -3,7 +3,7 @@ class EntitySystem:
         if not hasattr(cls, 'instance'):
             cls.instance = super(EntitySystem, cls).__new__(cls)
             cls.lastEntityUid = 1 # 0 For errors
-            cls.entities = {}
+            cls.entities = {} # uid: entity
         return cls.instance
 
     '''
@@ -37,6 +37,14 @@ class EntitySystem:
         if uid in self.entities:
             return self.entities[uid]
         return False
+    
+
+    '''
+    Cleanup all serialized entities.
+    '''
+    def clean(self):
+        self.entities = {}
+        self.lastEntityUid = 1
 
 
     def _serialize(self):

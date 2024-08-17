@@ -5,6 +5,7 @@ import src.yaml as yaml
 from src.ImageReader import *
 from src.Tiles import TilesRefsManager
 from src.ColorHelper import *
+from src.EntitySystem import EntitySystem
 
 from .settingsFrame import SettingsFrame
 from .imageFrame import ImageFrame
@@ -84,4 +85,7 @@ class Window(ctk.CTk):
         _map = ConvertImageToMap(settings.image, settings.colorConfig)
         yaml.write(settings.outPath + settings.outFileName, _map._serialize())
         print("Image converted to path: " + settings.outPath + settings.outFileName)
+
+        EntitySystem().clean()
+        print("Cleanup all entities")
 

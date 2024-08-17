@@ -30,7 +30,6 @@ class OptionEntry(ctk.CTkFrame):
                                   relief="flat",
                                   bd=0)
         self.listbox.bind("<<ListboxSelect>>", self.on_select)
-        self.listbox.bind("<MouseWheel>", self.on_mousewheel)
 
         self.listbox.pack(fill="both", padx=3, pady=3, expand=True)
 
@@ -82,11 +81,6 @@ class OptionEntry(ctk.CTkFrame):
             self.entry.insert(0, selected_option)
             self.listFrame.place_forget()
             self.master.focus()
-
-
-    def on_mousewheel(self, event):
-        # Прокрутка списка на основании движения мыши
-        self.listbox.yview_scroll(int(-1*(event.delta/120)), "units")
 
 
 class HoverListbox(tk.Listbox):
