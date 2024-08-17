@@ -9,7 +9,7 @@ from src.EntitySystem import EntitySystem
 from .settingsFrame import SettingsFrame
 from .imageFrame import ImageFrame
 from .appSettings import *
-
+from .popup import PopupWindow
 
 
 class Window(ctk.CTk):
@@ -72,14 +72,17 @@ class Window(ctk.CTk):
 
         if not settings.image:
             print("ERROR: image not selected")
+            PopupWindow(self, "Error", "Image is not selected.")
             return
 
         if not settings.outPath:
             print("ERROR: output path not selected")
+            PopupWindow(self, "Error", "Output folder is not selected.")
             return
 
         if not settings.outFileName:
             print("ERROR: output filename not selected")
+            PopupWindow(self, "Error", "Name for the output file is not selected.")
             return
 
         _map = ConvertImageToMap(settings.image, settings.colorConfig)
