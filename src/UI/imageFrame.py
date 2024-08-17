@@ -59,7 +59,11 @@ class ImageFrame(ctk.CTkFrame):
         if file_path:
             settings = GlobalSettings()
             image = Image.open(file_path)
-            settings.image = image.convert("RGBA")
+
+            if '.png' in file_path:
+                settings.image = image.convert("RGBA")
+            else:
+                settings.image = image.convert("RGB")
 
             width, height = image.size
             resize = min(self.image_label.winfo_height() / width, self.image_label.winfo_height() / height)

@@ -26,7 +26,12 @@ def ConvertImageToMap(img: Image, colormap: dict):
     for x in range(width):
         for y in range(height):
             inv_y = height - y - 1
-            color = rgbaToHex(pixels[x, y])
+            if img.mode == "RGBA":
+                color = rgbaToHex(pixels[x, y])
+            elif img.mode == "RGB":
+                color = rgbToHex(pixels[x, y])
+            else:
+                raise ValueError(f"Unsupported image mode: {img.mode}")
             selector = colormap[color]
 
             # Add tiles

@@ -2,6 +2,7 @@ import customtkinter as ctk
 from .appSettings import *
 from .configRow import ConfigRow
 from src.ColorHelper import *
+from src.ImageReader.selectors import *
 
 
 class SettingsFrame(ctk.CTkFrame):
@@ -15,7 +16,7 @@ class SettingsFrame(ctk.CTkFrame):
     def __init__(self, master):
         if not self._initialized:
             super().__init__(master)
-            self.frames: dict = {}
+            self.frames: dict = {} # color: row frame
 
             self.upper_frame = ctk.CTkFrame(self)
             self.upper_frame.pack(fill="x", padx=20, pady=5)
@@ -62,4 +63,11 @@ class SettingsFrame(ctk.CTkFrame):
 
                 self.frames[color] = row_frame
         print(f"Settings frame has been set up for {len(colormap)} colors")
+
+
+    def setup_colormap(self):
+        settings = GlobalSettings()
+        settings.colorConfig = {"#0000000": TileSelector("Space")} # For PNG's
+        for color in self.frames:
+            settings.colorConfig[color] = self.frames[color].getOutput()
 
