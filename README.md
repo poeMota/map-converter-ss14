@@ -2,7 +2,7 @@
 
 ### A tool for quickly converting map drawings to YAML map format of Space Station 14.
 ![image](https://github.com/user-attachments/assets/2b3bf4a3-9e1a-4f86-9afa-8f214f54e113)
-![image](https://github.com/user-attachments/assets/def29607-3fc0-4641-bc78-e3d52e44f3c8)
+![image](https://github.com/user-attachments/assets/81e55a4b-b6c6-4b69-bce0-82c254763d14)
 ![image](https://github.com/user-attachments/assets/6b0e3c3d-31ad-435d-ad0f-626a57629f70)
 
 ## Installing
