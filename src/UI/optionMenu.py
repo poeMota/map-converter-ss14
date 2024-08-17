@@ -8,7 +8,7 @@ class OptionEntry(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         self.options = options
 
-        self.entry = ctk.CTkEntry(self)
+        self.entry = ctk.CTkEntry(self, width=200)
         self.entry.pack(fill='x')
         self.entry.bind("<KeyRelease>", self.update_listbox)
         self.entry.bind("<Return>", lambda _: self.master.focus())
@@ -17,9 +17,7 @@ class OptionEntry(ctk.CTkFrame):
         self.listFrame = ctk.CTkFrame(master.master,
                                       border_color="#565b5e",
                                       fg_color="#343638",
-                                      border_width=2,
-                                      width=200,
-                                      height=100)
+                                      border_width=2)
 
         self.listbox = HoverListbox(self.listFrame,
                                   fg="white",
