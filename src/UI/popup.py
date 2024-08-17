@@ -7,7 +7,6 @@ class PopupWindow(ctk.CTkToplevel):
         self.title(title)
         self.geometry(f"{width}x{height}")
 
-        self.grab_set()
         self.attributes("-topmost", True)
 
         # Message label
@@ -17,6 +16,8 @@ class PopupWindow(ctk.CTkToplevel):
         # Close buttom
         self.close_button = ctk.CTkButton(self, text=buttlonLabel, command=self.close_window)
         self.close_button.pack(pady=10)
+
+        self.after(1, self.grab_set) # the window may not have time to initialise
 
 
     def close_window(self):
