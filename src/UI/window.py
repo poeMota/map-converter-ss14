@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from PIL import Image
 
 import src.yaml as yaml
 from src.ImageReader import *

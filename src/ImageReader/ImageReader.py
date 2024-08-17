@@ -1,7 +1,7 @@
 from PIL import Image
 from math import floor
 
-from src.GridSystem import Map, Grid, Chunk, Tile
+from src.GridSystem import *
 from src.Tiles import TilesRefsManager
 from src.EntitySystem import Entity
 from src.ColorHelper import *

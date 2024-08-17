@@ -1,5 +1,4 @@
 from .chunk import Chunk
-from .tile import Tile
 
 from src.Components import *
 from src.EntitySystem import Entity
@@ -34,7 +33,7 @@ class Grid(Entity):
         self.chunks[chunk.strInd()] = chunk
 
 
-    def SetTile(self, tile: Tile, _tilesRefsMan):
+    def SetTile(self, tile, _tilesRefsMan):
         tile.id = _tilesRefsMan.tileRefs[tile.name]
 
         ind = [floor(tile.x / 16), floor(tile.y / 16)]
