@@ -61,5 +61,5 @@ class SettingsFrame(ctk.CTkFrame):
                 row_frame.pack(fill="x", pady=5, padx=10)
 
                 self.frames[color] = row_frame
-        print("Settings frame has been set up for {len(colormap)} colors")
+        print(f"Settings frame has been set up for {len(colormap)} colors")
 

@@ -79,5 +79,5 @@ class ImageFrame(ctk.CTkFrame):
         path = filedialog.askdirectory() + '/'
         if path:
             GlobalSettings().outPath = path
-            print("Output path selected: {path}")
+            print(f"Output path selected: {path}")
 
