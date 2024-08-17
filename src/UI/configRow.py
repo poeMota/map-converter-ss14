@@ -1,8 +1,10 @@
 import customtkinter as ctk
 
 from .appSettings import *
+from .optionMenu import OptionEntry
 from src.ColorHelper import *
 from src.ImageReader import *
+from src.Tiles import TilesRefsManager
 
 
 class ConfigRow(ctk.CTkFrame):
@@ -23,7 +25,7 @@ class ConfigRow(ctk.CTkFrame):
         self.entityEntry.insert(0, "")
 
         # TileName selector
-        self.tileEntry = ctk.CTkEntry(self, width=200)
+        self.tileEntry = OptionEntry(self, TilesRefsManager().tileRefs.keys(), width=200)
         self.tileEntry.pack(side="left", padx=10, pady=10)
         self.tileEntry.insert(0, baseTile)
 

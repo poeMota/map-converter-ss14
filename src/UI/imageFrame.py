@@ -5,6 +5,7 @@ from tkinter import filedialog
 from .settingsFrame import SettingsFrame
 from src.ColorHelper import *
 from .appSettings import *
+from .optionMenu import OptionEntry
 
 
 class ImageFrame(ctk.CTkFrame):
@@ -71,10 +72,8 @@ class ImageFrame(ctk.CTkFrame):
             _settingsFrame = SettingsFrame(self.master)
             _settingsFrame.set_options(GetImageColormap(file_path))
 
-            settings.fileName = '/' + file_path.split('/')[-1].split('.')[0] + ".yml"
-
 
     def select_output_path(self):
-        path = filedialog.askdirectory()
+        path = filedialog.askdirectory() + '/'
         if path: GlobalSettings().outPath = path
 
