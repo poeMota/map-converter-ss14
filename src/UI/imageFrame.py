@@ -5,9 +5,9 @@ from tkinter import filedialog
 import src.yaml as yaml
 from src.EntitySystem import EntitySystem
 from src.ImageReader import ConvertImageToMap
-from .settingsFrame import SettingsFrame
 from src.ColorHelper import *
-from .appSettings import *
+from src.Config import *
+from .settingsFrame import SettingsFrame
 from .optionMenu import OptionEntry
 from .popup import PopupWindow, ColorsWarningPopup
 
@@ -70,9 +70,7 @@ class ImageFrame(ctk.CTkFrame):
                 image = image.convert("RGB")
                 imageColormap = GetImageColormap(image, rgbToHex)
 
-
-            colorsLimit = 256 # TODO - move this to config
-            if len(imageColormap) > colorsLimit:
+            if len(imageColormap) > GlobalSettings().colorsLimit:
                 print(f"WARNING: to many colors in image - {len(imageColormap)}")
                 ColorsWarningPopup(self,
                                    "Warning",

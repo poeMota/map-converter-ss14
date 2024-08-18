@@ -2,7 +2,7 @@ import customtkinter as ctk
 
 from .settingsFrame import SettingsFrame
 from .imageFrame import ImageFrame
-from .appSettings import *
+from src.Config import *
 
 
 class Window(ctk.CTk):

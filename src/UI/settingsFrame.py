@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from .appSettings import *
 from .configRow import ConfigRow
+from src.Config import *
 from src.ColorHelper import *
 from src.ImageReader.selectors import *
 from src.Tiles import TilesRefsManager
@@ -24,7 +24,6 @@ class SettingsFrame(ctk.CTkFrame):
 
             self.scrollable_frame = ctk.CTkScrollableFrame(self)
             self.scrollable_frame.pack(fill="both", expand=True, padx=20, pady=15)
-
 
             # Autogenerate config button
             self.autogen_button = ctk.CTkButton(self.upper_frame, text="Autogenerate", command=self.autogen_config)

@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
-from .appSettings import *
 from .optionMenu import OptionEntry
+from src.Config import *
 from src.ColorHelper import *
 from src.ImageReader.selectors import *
 from src.Tiles import TilesRefsManager
