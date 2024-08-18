@@ -70,7 +70,7 @@ def GetImageColormap(image: Image, convert = True):
 def quantize(image: Image, colors: int):
     mode = image.mode
 
-    if mode == "RGBA": method = 3
+    if mode == "RGBA": method = 2
     else: method = Image.MEDIANCUT
 
     return image.quantize(colors=colors, method=method).convert(mode)
