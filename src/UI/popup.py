@@ -48,7 +48,7 @@ class ColorsWarningPopup(PopupWindow):
         self.command = command
 
         self.option = ctk.CTkOptionMenu(self,
-                                        values=["16 bit", "8 bit", "4 bit"])
+                                        values=["8 bit", "4 bit", "2 bit", "1 bit"])
         self.option.set("8 bit")
         self.option.pack(pady=10, padx=10, side="left")
 
