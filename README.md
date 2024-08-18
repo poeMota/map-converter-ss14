@@ -15,7 +15,7 @@ To install, you must have a [python](https://www.python.org/downloads/) and [git
 run `install.bat`.
   
 **Linux:**
-run `install.sh` from terminal.
+run `bash install.sh` from terminal.
 
 ### 3. Now you can run the application
 ```python main.py```
