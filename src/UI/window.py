@@ -11,6 +11,7 @@ class Window(ctk.CTk):
 
         self.title("SS14 Map Converter -- Image to YAML")
         self.geometry("800x600")
+        self.minsize(800, 600)
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 

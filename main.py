@@ -18,5 +18,5 @@ if __name__ == '__main__':
     app.mainloop()
 
     settings.writeConfig()
-    print("Good bye")
+    print(f"Config saved to: {settings.configPath}")
 
