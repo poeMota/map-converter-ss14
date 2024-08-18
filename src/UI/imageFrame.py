@@ -2,11 +2,14 @@ import customtkinter as ctk
 from PIL import Image
 from tkinter import filedialog
 
+import src.yaml as yaml
+from src.EntitySystem import EntitySystem
+from src.ImageReader import ConvertImageToMap
 from .settingsFrame import SettingsFrame
 from src.ColorHelper import *
 from .appSettings import *
 from .optionMenu import OptionEntry
-from .popup import ColorsWarningPopup
+from .popup import PopupWindow, ColorsWarningPopup
 
 
 class ImageFrame(ctk.CTkFrame):
@@ -39,7 +42,7 @@ class ImageFrame(ctk.CTkFrame):
             self.output_path_button.pack(pady=0)
 
             # Convert button
-            self.convert_button = ctk.CTkButton(self.right_frame, text="Convert to map", command=master.convert_image)
+            self.convert_button = ctk.CTkButton(self.right_frame, text="Convert to map", command=self.convert_image)
             self.convert_button.pack(pady=10, padx=5, side="bottom")
 
             # Filename entry
@@ -104,4 +107,32 @@ class ImageFrame(ctk.CTkFrame):
         if path:
             GlobalSettings().outPath = path
             print(f"Output path selected: {path}")
+
+
+    def convert_image(self):
+        settings = GlobalSettings()
+        settings.outFileName = settings.outFileEntry.get().strip().removesuffix('.yml') + '.yml'
+        SettingsFrame(self.master).setup_colormap()
+
+        if not settings.image:
+            print("ERROR: image not selected")
+            PopupWindow(self, "Error", "Image is not selected.")
+            return
+
+        if not settings.outPath:
+            print("ERROR: output path not selected")
+            PopupWindow(self, "Error", "Output folder is not selected.")
+            return
+
+        if not settings.outFileName:
+            print("ERROR: output filename not selected")
+            PopupWindow(self, "Error", "Name for the output file is not selected.")
+            return
+
+        _map = ConvertImageToMap(settings.image, settings.colorConfig)
+        yaml.write(settings.outPath + settings.outFileName, _map._serialize())
+        print("Image converted to path: " + settings.outPath + settings.outFileName)
+
+        EntitySystem().clean()
+        print("Cleanup all entities")
 
