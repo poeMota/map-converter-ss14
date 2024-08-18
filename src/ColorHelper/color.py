@@ -3,12 +3,12 @@ from PIL import Image
 
 
 def rgbToHex(rgb: list):
-    return '#{:01x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
+    return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
 
 
 def rgbaToHex(rgba):
     r, g, b, a = rgba
-    return "#{:01x}{:02x}{:02x}{:02x}".format(r, g, b, int(a * 255))
+    return "#{:02x}{:02x}{:02x}{:02x}".format(r, g, b, int(a * 255))
 
 
 def hexToRgba(hex_color):
@@ -53,21 +53,21 @@ def AvargeColor(colors: list[list]) -> str:
     return rgba
 
 
-# TODO - optimize this
-def GetImageColormap(img: Image, convert = rgbaToHex):
-    pixels = img.load()
-    width, height = img.size
+def GetImageColormap(image: Image, convert = True):
+    colors = set(list(image.getdata()))
 
-    colormap = []
-    for y in range(height):
-        for x in range(width):
-            if convert:
-                color = convert(pixels[x, y])
-            else:
-                color = pixels[x, y]
+    if image.mode == "RGBA":
+        convertMethod = rgbaToHex
+    elif image.mode == "RGB":
+        convertMethod = rgbToHex
+    else:
+        raise ValueError(f"Unsupported image mode: {image.mode}")
 
-            if color not in colormap:
-                colormap.append(color)
+    if convert: return [convertMethod(color) for color in colors]
+    else: return colors
 
-    return colormap
+
+def quantize(image: Image, colors: int):
+    mode = image.mode
+    return image.quantize(colors=colors, method=Image.MEDIANCUT).convert(mode)
 

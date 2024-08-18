@@ -60,7 +60,6 @@ class ImageFrame(ctk.CTkFrame):
         if file_path:
             image = Image.open(file_path)
 
-            print("Collecting image colormap...")
             if '.png' in file_path:
                 image = image.convert("RGBA")
                 imageColormap = GetImageColormap(image)
@@ -69,12 +68,13 @@ class ImageFrame(ctk.CTkFrame):
                 imageColormap = GetImageColormap(image, rgbToHex)
 
 
-            colorsLimit = 100
+            colorsLimit = 100 # TODO - move this to config
             if len(imageColormap) > colorsLimit:
+                print(f"WARNING: to many colors in image - {len(imageColormap)}")
                 ColorsWarningPopup(self,
                                    "Warning",
-                                   "The image contains too many colours, the program will work unstably, it is recommended to convert the image to a format with fewer bits.",
-                                   lambda value: self._select_image(image.convert(f"I;{value}").convert("RGB")))
+                                   "The image contains too many colors, the program will work unstably, it is recommended to convert the image to a format with fewer bits.",
+                                   lambda value: self._select_image(quantize(image, 2**value)))
             else:
                 self._select_image(image, imageColormap)
                 print(f"Open image from {file_path}")

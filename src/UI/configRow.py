@@ -30,7 +30,7 @@ class ConfigRow(ctk.CTkFrame):
         self.tileEntry.insert(0, baseTile)
 
         # Color square
-        self.colorLabel = ctk.CTkLabel(self, width=30, height=30, text="", fg_color=HEX8ToHEX6(self.color))
+        self.colorLabel = ctk.CTkLabel(self, width=30, height=30, text="", fg_color=color)
         self.colorLabel.pack(side="right", pady=10, padx=10)
 
 
