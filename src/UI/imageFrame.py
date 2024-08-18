@@ -71,7 +71,7 @@ class ImageFrame(ctk.CTkFrame):
                 imageColormap = GetImageColormap(image, rgbToHex)
 
 
-            colorsLimit = 100 # TODO - move this to config
+            colorsLimit = 256 # TODO - move this to config
             if len(imageColormap) > colorsLimit:
                 print(f"WARNING: to many colors in image - {len(imageColormap)}")
                 ColorsWarningPopup(self,
