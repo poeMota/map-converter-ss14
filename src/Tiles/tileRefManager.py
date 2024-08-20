@@ -1,5 +1,6 @@
 from os import listdir, path
 from PIL import Image
+from pathlib import Path
 
 import src.yaml as yaml
 from src.ColorHelper import *
@@ -54,7 +55,10 @@ class TilesRefsManager:
     def getColorRefs(self):
         for proto in self.prototypes:
             if "sprite" in proto:
-                image = Image.open(self.texturesPath + proto["sprite"]).convert("RGBA")
-                colors = GetImageColormap(image, None)
-                self.colorRefs[rgbaToHex(AvargeColor(colors))] = proto["id"]
+                if Path(self.texturesPath + proto["sprite"]).is_file():
+                    image = Image.open(self.texturesPath + proto["sprite"]).convert("RGBA")
+                    colors = GetImageColormap(image, None)
+                    self.colorRefs[rgbaToHex(AvargeColor(colors))] = proto["id"]
+                else:
+                    print(f"WARNING: No sprite found for the tile {proto['id']} on the path: {proto['sprite']}")
 

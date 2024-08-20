@@ -31,6 +31,7 @@ class GlobalSettings:
             self.outFileName = None
             self.outFileEntry = None
             self.colorsLimit = 256
+            self.allowUseUnregistredTiles = True
 
             self.colorConfig = {} # color: selector
 
@@ -42,8 +43,12 @@ class GlobalSettings:
         if self.configPath.is_file():
             data = yaml.read(self.configPath)["config"]
 
-            self.colorsLimit = data["colorsLimit"]
-            self.outPath = data["outPath"]
+            if "colorsLimit" in data:
+                self.colorsLimit = data["colorsLimit"]
+            if "outPath" in data:
+                self.outPath = data["outPath"]
+            if "allowUseUnregistredTiles" in data:
+                self.allowUseUnregistredTiles = data["allowUseUnregistredTiles"]
         else:
             self.writeConfig()
 
@@ -53,6 +58,7 @@ class GlobalSettings:
                 self.configPath, {
                 "config": {
                     "colorsLimit": self.colorsLimit,
-                    "outPath": self.outPath
+                    "outPath": self.outPath,
+                    "allowUseUnregistredTiles": self.allowUseUnregistredTiles
             }})
 

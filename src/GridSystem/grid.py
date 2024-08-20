@@ -34,6 +34,8 @@ class Grid(Entity):
 
 
     def SetTile(self, tile, _tilesRefsMan):
+        if tile.name not in _tilesRefsMan.tileRefs:
+            _tilesRefsMan.tileRefs[tile.name] = len(_tilesRefsMan.tileRefs)
         tile.id = _tilesRefsMan.tileRefs[tile.name]
 
         ind = [floor(tile.x / 16), floor(tile.y / 16)]
