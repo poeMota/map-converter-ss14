@@ -57,7 +57,7 @@ class TilesRefsManager:
             if "sprite" in proto:
                 if Path(self.texturesPath + proto["sprite"]).is_file():
                     image = Image.open(self.texturesPath + proto["sprite"]).convert("RGBA")
-                    colors = GetImageColormap(image, None)
+                    colors = GetImageColormap(image, False, False)
                     self.colorRefs[rgbaToHex(AvargeColor(colors))] = proto["id"]
                 else:
                     print(f"WARNING: No sprite found for the tile {proto['id']} on the path: {proto['sprite']}")

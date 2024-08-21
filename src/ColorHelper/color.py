@@ -53,8 +53,11 @@ def AvargeColor(colors: list[list]) -> str:
     return rgba
 
 
-def GetImageColormap(image: Image, convert = True):
-    colors = set(list(image.getdata()))
+def GetImageColormap(image: Image, convert = True, uniqueOnly = True):
+    if uniqueOnly:
+        colors = set(list(image.getdata()))
+    else:
+        colors = list(image.getdata())
 
     if image.mode == "RGBA":
         convertMethod = rgbaToHex
