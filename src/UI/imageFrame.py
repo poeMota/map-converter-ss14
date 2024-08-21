@@ -23,6 +23,7 @@ class ImageFrame(ctk.CTkFrame):
     def __init__(self, master):
         if not self._initialized:
             super().__init__(master)
+            settings = GlobalSettings()
             self.left_frame = ctk.CTkFrame(self)
             self.left_frame.pack(side="left", fill="both", expand=True, padx=20, pady=20)
 
@@ -53,9 +54,19 @@ class ImageFrame(ctk.CTkFrame):
             self.filename_label = ctk.CTkLabel(self.right_frame, text="Enter out file name")
             self.filename_label.pack(side="bottom")
 
-            GlobalSettings().outFileEntry = self.filename_entry
+            # Ignore tile errors checkbox
+            self.unregistred_tiles_checkbox = ctk.CTkCheckBox(self.right_frame,
+                                                              text="Allow any tiles",
+                                                              variable=ctk.BooleanVar(value=settings.allowUseUnregistredTiles),
+                                                              command=self.on_checkbox_change)
+            self.unregistred_tiles_checkbox.pack(pady=10, padx=5, side="top")
 
+            settings.outFileEntry = self.filename_entry
             self._initialized = True
+
+
+    def on_checkbox_change(self):
+        GlobalSettings().allowUseUnregistredTiles = bool(self.unregistred_tiles_checkbox.get())
 
 
     def select_image(self):
@@ -110,7 +121,15 @@ class ImageFrame(ctk.CTkFrame):
     def convert_image(self):
         settings = GlobalSettings()
         settings.outFileName = settings.outFileEntry.get().strip().removesuffix('.yml') + '.yml'
-        SettingsFrame(self.master).setup_colormap()
+
+        settingsFrame = SettingsFrame(self.master)
+        try:
+            settingsFrame.validate_config()
+        except ValueError as e:
+            print(repr(e))
+            PopupWindow(self, "Error", "ERROR: " + str(e))
+            return
+        settingsFrame.setup_colormap()
 
         if not settings.image:
             print("ERROR: image not selected")
