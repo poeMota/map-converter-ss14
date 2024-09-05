@@ -58,7 +58,7 @@ class GlobalSettings:
                 self.configPath, {
                 "config": {
                     "colorsLimit": self.colorsLimit,
-                    "outPath": self.outPath,
+                    "outPath": f'"{self.outPath}"',
                     "allowUseUnregistredTiles": self.allowUseUnregistredTiles
             }})
 
