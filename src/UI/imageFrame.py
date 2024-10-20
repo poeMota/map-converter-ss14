@@ -148,7 +148,9 @@ class ImageFrame(ctk.CTkFrame):
 
         _map = ConvertImageToMap(settings.image, settings.colorConfig)
         yaml_write(settings.outPath + settings.outFileName, _map._serialize())
+
         print("Image converted to path: " + settings.outPath + settings.outFileName)
+        PopupWindow(self, "Done", "Image has been successfully converted")
 
         EntitySystem().clean()
         print("Cleanup all entities")
