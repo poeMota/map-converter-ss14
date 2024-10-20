@@ -46,7 +46,7 @@ class GlobalSettings:
             if "colorsLimit" in data:
                 self.colorsLimit = data["colorsLimit"]
             if "outPath" in data:
-                self.outPath = data["outPath"]
+                self.outPath = Path(data["outPath"])
             if "allowUseUnregistredTiles" in data:
                 self.allowUseUnregistredTiles = data["allowUseUnregistredTiles"]
         else:
@@ -58,7 +58,7 @@ class GlobalSettings:
                 self.configPath, {
                 "config": {
                     "colorsLimit": self.colorsLimit,
-                    "outPath": f'"{self.outPath}"',
+                    "outPath": str(self.outPath),
                     "allowUseUnregistredTiles": self.allowUseUnregistredTiles
             }})
 

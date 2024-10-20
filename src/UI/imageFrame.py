@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 from tkinter import filedialog
+from pathlib import Path
 
 from src.Yaml import *
 from src.EntitySystem import EntitySystem
@@ -114,7 +115,7 @@ class ImageFrame(ctk.CTkFrame):
     def select_output_path(self):
         path = filedialog.askdirectory() + '/'
         if path:
-            GlobalSettings().outPath = path
+            GlobalSettings().outPath = Path(path)
             print(f"Output path selected: {path}")
 
 
@@ -147,10 +148,10 @@ class ImageFrame(ctk.CTkFrame):
             return
 
         _map = ConvertImageToMap(settings.image, settings.colorConfig)
-        yaml_write(settings.outPath + settings.outFileName, _map._serialize())
+        yaml_write(settings.outPath/settings.outFileName, _map._serialize())
 
-        print("Image converted to path: " + settings.outPath + settings.outFileName)
-        PopupWindow(self, "Done", "Image has been successfully converted")
+        print("Image converted to path: " + str(settings.outPath/settings.outFileName))
+        PopupWindow(self, "Done", "Image has been successfully converted \nPath: " + str(settings.outPath/settings.outFileName))
 
         EntitySystem().clean()
         print("Cleanup all entities")
