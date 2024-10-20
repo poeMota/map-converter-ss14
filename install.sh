@@ -4,9 +4,6 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-git submodule init
-git submodule update
-
 if ! command -v pacman &> /dev/null; then
    if ! command -v pip3 &> /dev/null; then
        echo "ERROR: pip not installed"
@@ -20,8 +17,8 @@ else
        exit 1
    fi
 
-   sudo pacman --no-confirm -S python-pillow
-   sudo pacman --no-confirm -S tk
+   sudo pacman -S --noconfirm python-pillow
+   sudo pacman -S --noconfirm tk
    yay --noconfirm -S python-customtkinter
 fi
 

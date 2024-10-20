@@ -2,7 +2,7 @@ from os import listdir, path
 from PIL import Image
 from pathlib import Path
 
-import src.yaml as yaml
+from src.Yaml import *
 from src.ColorHelper import *
 
 
@@ -32,7 +32,7 @@ class TilesRefsManager:
     def getPrototypes(self, dirPath):
         for filename in listdir(dirPath):
             if '.yml' in filename:
-                data = yaml.read(dirPath + filename)
+                data = yaml_read(dirPath + filename)
                 if type(data) is list:
                     [self.prototypes.append(i) for i in data]
                 else:

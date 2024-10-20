@@ -1,7 +1,7 @@
 from enum import Enum
 from pathlib import Path
 
-import src.yaml as yaml
+from src.Yaml import *
 from src.Config import getConfigPath
 
 
@@ -41,7 +41,7 @@ class GlobalSettings:
 
     def readConfig(self):
         if self.configPath.is_file():
-            data = yaml.read(self.configPath)["config"]
+            data = yaml_read(self.configPath)["config"]
 
             if "colorsLimit" in data:
                 self.colorsLimit = data["colorsLimit"]
@@ -54,7 +54,7 @@ class GlobalSettings:
 
 
     def writeConfig(self):
-        yaml.write(
+        yaml_write(
                 self.configPath, {
                 "config": {
                     "colorsLimit": self.colorsLimit,

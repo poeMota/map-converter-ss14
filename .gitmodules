@@ -1,3 +1,0 @@
-[submodule "src/yaml"]
-	path = src/yaml
-	url = https://github.com/poeMota/python-YAML

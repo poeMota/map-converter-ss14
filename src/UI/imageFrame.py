@@ -2,7 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 from tkinter import filedialog
 
-import src.yaml as yaml
+from src.Yaml import *
 from src.EntitySystem import EntitySystem
 from src.ImageReader import ConvertImageToMap
 from src.ColorHelper import *
@@ -147,7 +147,7 @@ class ImageFrame(ctk.CTkFrame):
             return
 
         _map = ConvertImageToMap(settings.image, settings.colorConfig)
-        yaml.write(settings.outPath + settings.outFileName, _map._serialize())
+        yaml_write(settings.outPath + settings.outFileName, _map._serialize())
         print("Image converted to path: " + settings.outPath + settings.outFileName)
 
         EntitySystem().clean()
