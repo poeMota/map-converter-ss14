@@ -17,8 +17,6 @@ To install, you must have a [python](https://www.python.org/downloads/) and [git
 
 Alternatively, you can manually install via terminal:
 - `cd map-converter-ss14` - go to the cloned folder.
-- `git submodule init` - initialise the submodule.
-- `git submodule update` - clone submodule.
 - `pip install -r requirements.txt` - install dependencies.
 
 ### 3. Now you can run the application
