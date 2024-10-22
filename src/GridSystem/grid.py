@@ -7,7 +7,7 @@ from math import floor
 
 class Grid(Entity):
     def __init__(self, Map, chunks: list[Chunk], name: str, x: float, y: float):
-        Entity.__init__(self, proto="\"\"", pos=[x, y], parent="invalid", name=name)
+        Entity.__init__(self, proto="", pos=[x, y], parent="invalid", name=name)
         self.chunks = {chunk.strInd(): chunk for chunk in chunks}
         self.map = Map
 
