@@ -1,4 +1,4 @@
 Pillow==10.4.0
 customtkinter==5.2.2
-PyYAML=6.0.2
+PyYAML==6.0.2
 
