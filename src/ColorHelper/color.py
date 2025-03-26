@@ -45,7 +45,7 @@ def FindClosestColor(target_color: str, color_list: list[str]):
     return closest_color
 
 
-def AvargeColor(colors: list[list]) -> str:
+def AvarageColor(colors: list[list]) -> str:
     rgba = [0, 0, 0, 0]
 
     for i in range(len(rgba)):
@@ -77,4 +77,3 @@ def quantize(image: Image, colors: int):
     else: method = Image.MEDIANCUT
 
     return image.quantize(colors=colors, method=method).convert(mode)
-

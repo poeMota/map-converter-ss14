@@ -67,7 +67,7 @@ class SettingsFrame(ctk.CTkFrame):
 
     def setup_colormap(self):
         settings = GlobalSettings()
-        settings.colorConfig = {"#0000000": TileSelector("Space")} # For PNG's
+        settings.colorConfig = {"#00000000": TileSelector("Space")} # For PNG's
         for color in self.frames:
             settings.colorConfig[color] = self.frames[color].getOutput()
 
@@ -92,4 +92,3 @@ class SettingsFrame(ctk.CTkFrame):
             if (row.optionMenu.get() == Selectors.Entity.value and
                 not row.entityEntry.get().strip()):
                 raise ValueError(f"Empty entity proto field found")
-
