@@ -1,4 +1,4 @@
-#!/bin/usr/env bash
+#!/bin/bash
 if ! command -v python3 &> /dev/null; then
     echo "ERROR: Python not installed"
     exit 1
